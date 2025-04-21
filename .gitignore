@@ -62,7 +62,7 @@ examples/example_sdl_sdlrenderer/example_sdl_sdlrenderer
 # Hazel-specific
 # Directories
 bin/
-bin-int/
+obj/
 
  # Files
 Makefile 
