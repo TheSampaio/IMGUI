@@ -1,39 +1,44 @@
-project "IMGUI"
-    kind "StaticLib"
-    runtime "Static"
-    language "C++"
-    cppdialect "C++17"
+project "ImGui"
+	kind "StaticLib"
+	language "C++"
+    staticruntime "off"
 
-    location "build"
+	targetdir ("bin/" .. outputdir .. "/%{prj.name}")
+	objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-    targetdir ("out/build/bin/%{cfg.buildcfg}/%{prj.name}")
-    objdir    ("out/build/obj/%{cfg.buildcfg}/%{prj.name}")
+	files
+	{
+		"imconfig.h",
+		"imgui.h",
+		"imgui.cpp",
+		"imgui_draw.cpp",
+		"imgui_internal.h",
+		"imgui_tables.cpp",
+		"imgui_widgets.cpp",
+		"imstb_rectpack.h",
+		"imstb_textedit.h",
+		"imstb_truetype.h",
+		"imgui_demo.cpp"
+	}
 
-    defines { "IMGUI_IMPL_OPENGL_LOADER_GLAD" }
+	filter "system:windows"
+		systemversion "latest"
+		cppdialect "C++17"
 
-    includedirs {
-        "include"
-    }
+	filter "system:linux"
+		pic "On"
+		systemversion "latest"
+		cppdialect "C++17"
 
-    files {
-        "source/imgui.cpp",
-        
-        "source/imgui_draw.cpp",
-        "source/imgui_tables.cpp",
-        "source/imgui_widgets.cpp",
-        "source/imgui_demo.cpp",
-        "source/imgui_impl_glfw.cpp",
-        "source/imgui_impl_opengl3.cpp",
-        "source/imgui_impl_glfw.h",
-        "source/imgui_impl_opengl3.h"
+	filter "configurations:Debug"
+		runtime "Debug"
+		symbols "on"
 
-        "source/imgui_impl_glfw.h",
-        "source/imgui_impl_opengl3.h",
-    }
+	filter "configurations:Release"
+		runtime "Release"
+		optimize "on"
 
-    filter "system:windows"
-        systemversion "latest"
-        staticruntime "On"
-
-    filter { "system:windows", "configurations:Release" }
-        buildoptions "/MT"
+    filter "configurations:Dist"
+		runtime "Release"
+		optimize "on"
+        symbols "off"
